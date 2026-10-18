@@ -1,6 +1,6 @@
 # Задание 3. Графовые алгоритмы для подготовки фестиваля
 
-[Краткое условие (PDF, English / русский)](docs/Assignment_3.pdf)
+[Задание (PDF, русский)](docs/Assignment_3_RU.pdf) · [Assignment (PDF, English)](docs/Assignment_3_EN.pdf)
 
 [English version](README.md)
 

@@ -1,6 +1,6 @@
 # Assignment 3: Graph Algorithms for a Campus Festival
 
-[Brief assignment (PDF, English / Russian)](docs/Assignment_3.pdf)
+[Assignment (PDF, English)](docs/Assignment_3_EN.pdf) · [Задание (PDF, русский)](docs/Assignment_3_RU.pdf)
 
 [Русская версия](README_RU.md)
 
