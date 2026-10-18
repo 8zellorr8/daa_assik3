@@ -1,5 +1,7 @@
 # Задание 3. Графовые алгоритмы для подготовки фестиваля
 
+[Краткое условие (PDF, English / русский)](docs/Assignment_3.pdf)
+
 [English version](README.md)
 
 **Дисциплина:** Design and Analysis of Algorithms

@@ -1,5 +1,7 @@
 # Assignment 3: Graph Algorithms for a Campus Festival
 
+[Brief assignment (PDF, English / Russian)](docs/Assignment_3.pdf)
+
 [Русская версия](README_RU.md)
 
 **Course:** Design and Analysis of Algorithms
