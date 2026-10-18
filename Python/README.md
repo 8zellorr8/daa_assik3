@@ -8,7 +8,7 @@ For deep DFS, keep explicit frames with a vertex and next-neighbour position; do
 
 From the repository root run `python tools/run.py --language Python --check`, or select Python in `submission.json` and push to **Actions → Public checks**. Python 3.12+ is required locally. TODO errors are expected until implementation. See [the assignment](../ASSIGNMENT_EN.md).
 
-## Работа студента
+## Ваша реализация
 
 Реализуйте шесть методов и функцию восстановления пути в `source/algorithms.py`. `n` и `source` уже являются целыми числами, `operations` и `edges` — списками списков. Исходный ID строки `edges[i]` равен `i`. Приведения типов и дополнительный разбор JSON не нужны; служебный `main.py` готов.
 

@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Provided input helpers. Students may use these methods without editing them.
+ * Use these supplied methods to read input values; no changes are required.
  * They convert the parsed JSON values into ordinary int values and arrays.
  */
 public final class Input {

@@ -16,7 +16,7 @@ For deep DFS, retain a vertex and next-neighbour position in each explicit frame
 
 Run `python tools/run.py --language CSharp --check` from the repository root, or select CSharp in `submission.json` and use **Actions → Public checks**. Local checks require Python 3.12+ and the .NET 8 SDK. TODO errors are expected until implementation. See [the assignment](../ASSIGNMENT_EN.md).
 
-## Работа студента
+## Ваша реализация
 
 Реализуйте шесть методов и функцию восстановления пути в `source/Algorithms.cs`. Входы уже представлены как `int` и `int[][]`; исходный ID строки `edges[i]` равен `i`. Служебные `Input.cs`, `Program.cs` и `App.csproj` подготовлены.
 

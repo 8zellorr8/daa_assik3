@@ -1,4 +1,4 @@
-"""Student work: implement six graph methods and a route helper. See ../README.md."""
+"""Implement the six graph methods and your route helper. See ../README.md."""
 
 
 def dsu(request):

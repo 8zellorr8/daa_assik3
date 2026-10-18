@@ -1,6 +1,6 @@
 using System.Text.Json.Nodes;
 
-// Provided input helpers; students do not need to modify this file.
+// Use these supplied input helpers; no changes are required.
 public static class Input
 {
     public static int VertexCount(JsonObject request)

@@ -1,6 +1,6 @@
 # Java starter / Заготовка Java
 
-## Student work
+## Your implementation
 
 Implement the six methods in [source/Algorithms.java](source/Algorithms.java) and add your route-reconstruction helper. Each method already receives its input as ordinary variables:
 
@@ -25,7 +25,7 @@ For deep DFS, an explicit stack represents unfinished calls. A frame stores a ve
 
 Run checks from the repository root with `python tools/run.py --check`, or push to your copy and inspect **Actions → Public checks**. Local checks require JDK 17+ and Python 3.12+. TODO failures are expected before implementation. See [the assignment](../ASSIGNMENT_EN.md) for all requirements.
 
-## Работа студента
+## Ваша реализация
 
 Реализуйте шесть методов в [source/Algorithms.java](source/Algorithms.java) и добавьте свою функцию восстановления пути. Данные уже преобразованы в обычные переменные: `n` и `source` имеют тип `int`, `operations` и `edges` — `int[][]`. Строка `edges[i]` хранит концы ребра и его вес для взвешенных задач; исходный ID ребра равен `i`.
 

@@ -6,7 +6,7 @@ import java.util.StringJoiner;
 
 /**
  * Provided JSON input/output for the assignment's integer-valued requests.
- * Students do not need to implement, study or modify this parser.
+ * Use this parser as supplied; you do not need to implement or modify it.
  * Use Input.java to obtain numbers and arrays in Algorithms.java.
  */
 final class Json {

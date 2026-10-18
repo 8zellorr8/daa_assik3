@@ -16,7 +16,7 @@ For deep DFS, retain a vertex and next-neighbour position in each explicit frame
 
 Run `python tools/run.py --language Cpp --check` from the repository root, or select Cpp in `submission.json` and use **Actions → Public checks**. Local checks need Python 3.12+ and `g++` with C++17 support. TODO errors are expected until implementation. See [the assignment](../ASSIGNMENT_EN.md).
 
-## Работа студента
+## Ваша реализация
 
 Реализуйте шесть методов и функцию восстановления пути в `source/algorithms.hpp`. `n` и `source` имеют тип `int`, `operations` и `edges` — `vector<vector<int>>`. Исходный ID строки `edges[i]` равен `i`. Веса помещаются в `int`, но для сумм и расстояний нужен `long long`.
 

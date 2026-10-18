@@ -18,7 +18,7 @@ Implement DSU, Kruskal, Prim, Kosaraju SCC, DFS topological ordering and DAG sho
    | C# | [CSharp/source/Algorithms.cs](CSharp/source/Algorithms.cs) |
 
 4. Push your code. **Actions → Public checks** runs automatically in your copy. TODO bodies fail algorithm checks until implemented.
-5. Add your tests and results under [tests/student/](tests/student/README.md), complete English [ANALYSIS.md](ANALYSIS.md), and submit the exact commit URL in Moodle. Click **Submit assignment**. Give the instructor access to a private repository.
+5. Add your tests and results under [tests/student/](tests/student/README.md), complete English [ANALYSIS.md](ANALYSIS.md), and submit the exact commit URL in Moodle. Click **Submit assignment**. Give me access if your repository is private.
 
 Starter notes / Пояснения к коду: [Java](Java/README.md) · [Python](Python/README.md) · [C++](Cpp/README.md) · [C#](CSharp/README.md).
 
@@ -38,7 +38,7 @@ python tools/run.py --input examples/dsu.jsonl
 
 Compilation is limited to 60 seconds, each input batch to 20 seconds. `--language Python` overrides the manifest for one run. On Windows, `py -3` can replace `python`.
 
-In the instructor template, Actions checks tools and launch of all four languages. In student copies, it also checks algorithms. Public checks report pass/fail; they do not calculate grades or transfer them to Moodle. Full-scale correctness still needs your own testing.
+In this template, Actions checks tools and launch of all four languages. In your copy, it also checks your algorithms. Public checks report pass/fail; they do not calculate grades or transfer them to Moodle. Full-scale correctness still needs your own testing.
 
 ## Краткая инструкция
 

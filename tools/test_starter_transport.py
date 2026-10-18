@@ -51,7 +51,7 @@ class StarterTransportTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             target = Path(folder)
             self.copy_sources('Python', target, ['main.py'])
-            # Temporary echo methods isolate the framework from student TODOs.
+            # Temporary echo methods isolate the framework from unfinished algorithm bodies.
             source = '''def echo(request):
     result = {"original": request, "n": request["n"],
               "rows": request.get("operations", request.get("edges")),

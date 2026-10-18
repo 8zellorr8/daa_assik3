@@ -1,4 +1,4 @@
-"""Provided JSON Lines entry point. Student algorithms belong in algorithms.py."""
+"""Use this supplied JSON Lines entry point. Implement your algorithms in algorithms.py."""
 
 import json
 import sys

@@ -1,7 +1,7 @@
 #pragma once
 #include "json.hpp"
 
-// Provided JSON-to-int/vector helpers; students do not need to modify this file.
+// Use these supplied JSON-to-int/vector helpers; no changes are required.
 namespace Input {
     inline int vertexCount(const J& request) {
         return static_cast<int>(request["n"].number());

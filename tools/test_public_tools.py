@@ -1,4 +1,4 @@
-"""Regression checks for public tooling, not student algorithm implementations."""
+"""Regression checks for public tooling, separate from algorithm implementations."""
 import copy
 import contextlib
 import io

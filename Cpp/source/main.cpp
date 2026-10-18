@@ -1,6 +1,6 @@
 #include "algorithms.hpp"
 
-// Provided entry point. Student work belongs in algorithms.hpp.
+// Use this supplied entry point. Implement your algorithms in algorithms.hpp.
 J handle(const J& request) {
     string task = request["task"].text();
     if (task == "ping") {

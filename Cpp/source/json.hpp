@@ -3,7 +3,7 @@
 using namespace std;
 
 // Provided JSON transport for integer-valued assignment requests.
-// Students use input.hpp; studying or modifying this parser is not required.
+// Use input.hpp to read your inputs; no changes to this parser are required.
 struct J {
     using A = vector<J>;
     using O = map<string, J>;

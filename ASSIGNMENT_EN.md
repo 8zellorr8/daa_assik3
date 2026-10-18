@@ -203,13 +203,13 @@ Keep the supplied interface. Additional source files may be placed directly in t
 
 Push your work and check **Actions → Public checks**, or run `python tools/run.py --check` locally. The README lists runtime requirements and other commands. TODO bodies are unfinished work; setup success alone does not mean the algorithms pass. Public algorithm checks must pass before submission.
 
-Your submitted commit must contain the selected source code, `submission.json`, `tests/student/`, completed English `ANALYSIS.md` and a README with build/run/test commands. Submit the **exact commit URL** in Moodle Online text, then click **Submit assignment** and check the status. An Actions URL may be added as evidence. Give the instructor access to a private repository. Follow the Moodle deadline and approved extensions; when replacing work before the deadline, update the commit link.
+Your submitted commit must contain the selected source code, `submission.json`, `tests/student/`, completed English `ANALYSIS.md` and a README with build/run/test commands. Submit the **exact commit URL** in Moodle Online text, then click **Submit assignment** and check the status. An Actions URL may be added as evidence. Give me access if your repository is private. Follow the Moodle deadline and approved extensions; when replacing work before the deadline, update the commit link.
 
 ## 10. Assessment
 
 The practical rubric is worth **50 points**; the separate Moodle quiz is worth **50 points**. Together they form Assignment 3 out of 100, with the existing 20% contribution to the second attestation.
 
-**Public checks report pass/fail only. They do not calculate the practical grade or transfer marks to Moodle.** The 18-group rubric below is for separate instructor assessment; its grading tool is not included in this repository.
+**Public checks report pass/fail only. They do not calculate the practical grade or transfer marks to Moodle.** Your practical grade follows the 18-group rubric below; the separate grading tool is not included in this repository.
 
 | Method | Core | Edge cases | Witness | Scale | Total |
 |---|---:|---:|---:|---:|---:|
