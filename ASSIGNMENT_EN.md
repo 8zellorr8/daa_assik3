@@ -1,21 +1,24 @@
 # Assignment 3: Graph Algorithms for a Campus Festival
 
-**Course:** Design and Analysis of Algorithms  
-**Practical work:** 50 points  
-**Language:** Java 17+, Python 3.12+, C++17 or C# (.NET 8)  
+**Course:** Design and Analysis of Algorithms
+
+**Practical work:** 50 points
+
+**Language:** Java 17, Python 3.12+, C++17 or C# (.NET 8)
+
 **Deadline:** as announced in Moodle
 
 ## 1. Objective
 
-A campus festival requires cable connections between venues, an order for preparation tasks and delivery routes. Model cable connections as undirected edges and dependencies and delivery routes as directed edges. Each task receives its own graph; do not combine graphs from different requests.
+Implement graph algorithms for cable connections, preparation dependencies and delivery routes. Each request contains an independent graph.
 
-Implement six methods: `dsu`, `kruskal`, `prim`, `scc`, `topo` and `dag`. Use the algorithms specified below. Implement the graph algorithms yourself. Standard collections, sorting, priority queues and JSON input/output utilities are permitted.
+Implement `dsu`, `kruskal`, `prim`, `scc`, `topo` and `dag` using the methods specified below. Standard collections, sorting, priority queues and the supplied JSON adapters are permitted; implement the graph algorithms yourself.
 
 ## 2. Program requirements
 
-Choose one programming language. Your program must read UTF-8 JSON Lines from standard input and write one JSON result object per input line to standard output. Do not print prompts, timing information or debugging messages to standard output. Several requests may be processed in one execution. Initialise the algorithm state separately for every request.
+Choose one language. Keep the supplied UTF-8 JSON Lines interface: one request per input line and one result object per output line. Send only results to standard output. A process may receive several requests; reset algorithm state for each request.
 
-Vertices are numbered from `0` to `n-1`. An edge ID is its original zero-based position in the input `edges` array. Preserve IDs when sorting or building adjacency lists. Use signed 64-bit arithmetic for weights, total costs and finite distances. Python integers satisfy this requirement. Use JSON `null` for an unreachable distance.
+Vertices are numbered from `0` to `n-1`. Edge IDs are original zero-based positions in `edges`; preserve them when sorting or building adjacency lists. Integer inputs and outputs, including SCC labels, must fit signed 64-bit integers. Avoid overflow in cost and distance calculations; Python integers are suitable. Unreachable distances use JSON `null`.
 
 All limits are inclusive. Let `n` be the number of vertices, `m` the number of edges and `q` the number of union operations.
 
@@ -28,9 +31,9 @@ All limits are inclusive. Let `n` be the number of vertices, `m` the number of e
 
 Every edge endpoint and operation argument is a valid vertex. For `n=0`, the edge or operation list is empty. DAG requests contain a valid `source`, with `0 <= source < n`. Inputs satisfy these requirements; malformed JSON and out-of-range inputs are not assessed. Field names and task names are case-sensitive.
 
-Your implementation must handle deep graphs without call-stack failure. Include returned results when stating memory complexity. Output object field order is unrestricted. Where several answers are valid, any answer satisfying the stated conditions is accepted.
+Handle deep graphs without call-stack failure. Memory bounds include the returned result. Output field order is unrestricted; any valid non-unique answer is accepted.
 
-For an execution check, also support `{"task":"ping"}` with the response `{"status":"ready"}`. This checks input/output only and is not a seventh graph algorithm.
+The supplied adapter handles `{"task":"ping"}` with `{"status":"ready"}` for the setup check. Keep this behaviour.
 
 ## 3. Connectivity: disjoint-set union
 
@@ -109,8 +112,6 @@ One accepted output:
 {"component":[5,5,7,9],"condensation":[[5,7],[7,9]]}
 ```
 
-The condensation is acyclic. It summarises component dependencies; it does not make the original tasks inside a cyclic SCC schedulable.
-
 **Complexity:** `O(n+m)` expected time with hash-based condensation deduplication and `O(n+m)` memory.
 
 ## 6. Preparation schedule: DFS topological ordering
@@ -119,7 +120,7 @@ Determine whether all preparation tasks can be ordered. An edge `u -> v` means t
 
 Implement DFS with three states: unvisited, active and finished. An edge to an active vertex indicates a directed cycle. An edge to a finished vertex alone does not indicate a cycle. Check every component and reverse DFS finish order when no cycle exists.
 
-**Input:** `task="topo"`, `n`, and directed `edges` of the form `[u,v]`.
+**Input:** `task="topo"`, `n`, and directed `edges` of the form `[u,v]`. Duplicate edges and self-loops are allowed.
 
 **Output:** `acyclic`, a Boolean, and `order`. For an acyclic graph, return `acyclic=true` and every vertex exactly once, with each edge going forward in the order. For any directed cycle, return `acyclic=false` and `order=[]`. A self-loop is a cycle. For `n=0`, return `acyclic=true` and `order=[]`.
 
@@ -167,46 +168,46 @@ One accepted output:
 
 Add a helper that reconstructs a vertex sequence from the selected `parent_edge` IDs. A reachable route must run from source to target; the route to the source is `[source]`. Choose and document a no-route result for an unreachable target, for example an empty list or a null value. This choice concerns the helper only; JSON `distance` must still use `null` for unreachable vertices. Call the helper in your own tests for a reachable target, the source and an unreachable target. Also test tied or parallel edges. In the example, the route to vertex `3` is `[0,1,2,3]`, with cost `0`.
 
-The helper is part of your code, not a separate JSON task. **Complexity:** `O(n+m)` time and memory for DAG shortest paths; `O(L)` time and output space to reconstruct a route containing `L` vertices.
+The helper is not a separate JSON task. **Complexity:** `O(n+m)` time and memory for DAG shortest paths; `O(L)` time and output space to reconstruct a route containing `L` vertices.
 
 ## 8. Tests and analysis
 
-Store your test inputs, independently justified expected results, actual outputs and execution commands under `tests/student/`. Cover the applicable cases: empty graphs, isolates, disconnected components, repeated and self-unions, loops, parallel edges, equal optima, negative weights, totals beyond 32 bits, unreachable vertices, cycles outside source reachability and deep chains. Include consecutive requests of different tasks and sizes in one process, then repeat them to check state reset. Test large graphs within the published limits.
+Under `tests/student/`, include inputs, independently justified expected answers, actual outputs and commands. Cover applicable boundary cases: empty/disconnected graphs, isolates, repeated/self unions, loops, parallel/tied edges, negative weights, totals beyond 32 bits, unreachable vertices and cycles outside source reachability. Test large inputs and deep chains within the published limits, and repeat mixed requests in one process to check state reset.
 
-For non-unique answers, verify meaning rather than matching one reference list. Check forest feasibility and optimum cost, SCC equivalence and exact condensation, topological precedence, and shortest distances with valid parent paths. Where applicable, demonstrate that your checking accepts an alternative correct answer and rejects an invalid witness.
+Check non-unique answers semantically: forest feasibility and optimum cost, SCC membership and exact condensation, topological precedence, and shortest distances with valid parent paths. Where applicable, show that your checking accepts an alternative valid answer and rejects an invalid witness.
 
-Write `ANALYSIS.md` in English. For each of the six methods, explain the main steps, maintained state or invariant, correctness, relevant boundary cases and time/memory complexity. Explain state reset and handling of deep DFS. Include the actual helper calls and results, selected parent edge IDs, and route direction and weight checks.
+Complete `ANALYSIS.md` in English. For each method, explain the steps, invariant, correctness, boundary cases and time/memory complexity. Explain state reset and deep DFS. Include actual route-helper calls, results and selected edge IDs for reachable, source, unreachable and tied/parallel-edge cases; verify direction and total weight.
 
-Compare Kruskal and Prim on the **same graph instances at three sizes**. Check correct costs and valid forests before timing. For each size, report `n`, `m`, the generator and seed or stored input, at least three measurements per method, and their medians. Give the commands, runtime version, hardware or runner, timer and any warm-up. Use the same timing boundary for both methods: state whether graph construction, parsing and input/output are included. Exclude compilation. Explain the observations; a few measurements do not prove an asymptotic bound.
+Benchmark Kruskal and Prim on the **same graphs at three sizes**. Verify correct costs and valid forests first. At each size, record `n`, `m`, at least three timings per method and their medians. Give the generator/seed or stored inputs, commands, runtime, hardware, timer and warm-up. Exclude compilation; state whether graph construction, parsing and input/output are included, using the same boundary for both methods. Explain observations and limitations separately from the asymptotic argument.
 
 ## 9. Repository and submission
 
-Create your solution repository using **Use this template → Create a new repository**. Set `submission.json` with exactly one selected language value: `Java`, `Python`, `Cpp` or `CSharp`. For example:
+Select **Use this template → Create a new repository**. In `submission.json`, set `language` to `Java`, `Python`, `Cpp` or `CSharp`. Java is selected by default:
 
 ```json
 {"language":"Java"}
 ```
 
-The entry points and JSON adapters are supplied. Complete the six method bodies in `Algorithms.java`, `algorithms.py`, `algorithms.hpp` or `Algorithms.cs` in the selected source directory. Add your route helper there or in an additional source file in the same directory. Keep the input/output interface below.
+Complete the six methods and add your route helper in the selected source directory. The entry points and JSON adapters are supplied.
 
-| Language | Entry point |
-|---|---|
-| Java | `Java/source/Main.java`, class `Main`, without a package declaration |
-| Python | `Python/source/main.py` |
-| C++ | `Cpp/source/main.cpp` |
-| C# | `CSharp/source/Program.cs` and `App.csproj`, targeting `net8.0` and producing `App.dll` |
+| Language | Algorithm file | Entry point |
+|---|---|---|
+| Java | `Java/source/Algorithms.java` | `Java/source/Main.java`, class `Main`, no package |
+| Python | `Python/source/algorithms.py` | `Python/source/main.py` |
+| C++ | `Cpp/source/algorithms.hpp` | `Cpp/source/main.cpp` |
+| C# | `CSharp/source/Algorithms.cs` | `CSharp/source/Program.cs`, `App.csproj`, `net8.0`, output `App.dll` |
 
-Include the source files, `submission.json`, `tests/student/`, English `ANALYSIS.md` and a solution README with exact build, run and test commands. The program must be runnable from source in the selected environment without downloading dependencies. Include any required JSON utility source in your repository.
+Keep the supplied interface. Additional source files may be placed directly in the same source directory. Use Java 17-compatible code. Include required dependencies as source files; the solution must build and run without downloading packages.
 
-Push the completed work and submit the **URL of the exact GitHub commit** in Moodle Online text. Do not submit only a branch or repository URL. Complete the submission using **Submit assignment** and check its status. If the repository is private, give the instructor access. Any replacement submitted before the deadline must identify the updated commit. The linked commit is the version assessed.
+Push your work and check **Actions → Public checks**, or run `python tools/run.py --check` locally. The README lists runtime requirements and other commands. TODO bodies are unfinished work; setup success alone does not mean the algorithms pass. Public algorithm checks must pass before submission.
 
-Follow the deadline and any approved individual extension shown in Moodle. This document does not change the Moodle dates. The template provides input/output code, algorithm stubs and public checks. Run **Actions → Public checks** after pushing your work, or use the commands in the repository README locally. Public algorithm checks must pass before submission. Link the exact commit in Moodle; an Actions URL may be included as additional evidence. Passing public examples does not establish correctness on every permitted input. In the unchanged instructor template, Actions checks the testing tools and launch of all four languages; student copies also run algorithm examples, which fail until the TODO bodies are implemented.
+Your submitted commit must contain the selected source code, `submission.json`, `tests/student/`, completed English `ANALYSIS.md` and a README with build/run/test commands. Submit the **exact commit URL** in Moodle Online text, then click **Submit assignment** and check the status. An Actions URL may be added as evidence. Give the instructor access to a private repository. Follow the Moodle deadline and approved extensions; when replacing work before the deadline, update the commit link.
 
 ## 10. Assessment
 
-Practical work is assessed by independent automated tests out of **50 points**. The separate Moodle quiz is worth **50 points**; together they form Assignment 3 out of 100, with the existing 20% contribution to the second attestation.
+The practical rubric is worth **50 points**; the separate Moodle quiz is worth **50 points**. Together they form Assignment 3 out of 100, with the existing 20% contribution to the second attestation.
 
-The practical test groups have these maximum scores. A dash means that the method has no group of that type.
+**Public checks report pass/fail only. They do not calculate the practical grade or transfer marks to Moodle.** The 18-group rubric below is for separate instructor assessment; its grading tool is not included in this repository.
 
 | Method | Core | Edge cases | Witness | Scale | Total |
 |---|---:|---:|---:|---:|---:|
@@ -218,14 +219,12 @@ The practical test groups have these maximum scores. A dash means that the metho
 | DAG shortest paths | 5 | — | 3 | 2 | 10 |
 | **Total** | **26** | **4** | **10** | **10** | **50** |
 
-Core groups check results and optimum values. Edge-case groups check boundary cases. Witness groups check selected forest edges, condensation or parent paths. Scale groups check correct results on large inputs. Each of the 18 groups earns its maximum multiplied by the fraction of its tests passed, rounded half-up to 0.01. Sum the group scores, up to 50. Accept other valid optimal witnesses.
+Core checks results and optimum values; Edge cases checks boundaries; Witness checks forest edges, condensation or parent paths; Scale checks large inputs. A dash means no group of that type. Each of the 18 groups earns its maximum multiplied by the fraction of checks passed, rounded half-up to 0.01. Sum the group scores, up to 50; accept alternative valid optima.
 
-All six specified methods, the helper, analysis, own tests and benchmark remain required learning work. They have no separate manual points or discretionary deductions. Automated result tests alone do not establish the internal algorithm, authorship or truth of timing measurements. Instructor feedback or an explanation of the work does not alter the automatic score.
+The specified algorithms, helper, analysis, own tests and benchmark are required learning work without separate manual points or discretionary deductions. Public tests do not replace the full input requirements or the separate grading process.
 
-The instructor execution limits are 60 seconds for compilation and 20 seconds per requirement-group batch on one CPU, with 768 MiB container memory, Java heap up to 512 MiB, 128 processes and 256 MiB tmpfs. UTF-8 standard output is limited to 8 MiB per batch and each source file to 2 MiB.
-
-The quiz contains 30 single-answer questions. Each correct answer earns one raw point; a wrong or blank answer earns zero. The quiz grade is `raw / 30 × 50`, calculated once. There are no oral bonuses or oral score recovery. Confirmed test or question/key defects are corrected consistently for all affected original submissions or attempts. Infrastructure failures require investigation and rerun; they are not recorded as a student zero.
+The quiz has 30 single-answer questions: one raw point for a correct answer, zero for an incorrect or blank answer. Calculate `raw / 30 × 50` once. Course policies, including corrections and academic integrity, follow the syllabus.
 
 ## 11. Academic integrity
 
-Follow the course syllabus. In `ANALYSIS.md`, identify any external sources and AI tools, state their contribution and describe your own verification. If none were used, say so. You remain responsible for correctness, originality and quality. Do not claim tests or measurements that you did not perform.
+Follow the syllabus. In `ANALYSIS.md`, acknowledge external sources and AI tools, their contributions and your own verification; state if none were used. You are responsible for correctness, originality and quality. Report only tests and measurements you actually performed.
