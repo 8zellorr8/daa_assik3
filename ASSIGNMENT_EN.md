@@ -181,13 +181,13 @@ Compare Kruskal and Prim on the **same graph instances at three sizes**. Check c
 
 ## 9. Repository and submission
 
-Create your own solution repository. Add `submission.json` with exactly one selected language value: `Java`, `Python`, `Cpp` or `CSharp`. For example:
+Create your solution repository using **Use this template → Create a new repository**. Set `submission.json` with exactly one selected language value: `Java`, `Python`, `Cpp` or `CSharp`. For example:
 
 ```json
 {"language":"Java"}
 ```
 
-Use the following entry point for the selected language. Additional source files may be placed in the same source directory.
+The entry points and JSON adapters are supplied. Complete the six method bodies in `Algorithms.java`, `algorithms.py`, `algorithms.hpp` or `Algorithms.cs` in the selected source directory. Add your route helper there or in an additional source file in the same directory. Keep the input/output interface below.
 
 | Language | Entry point |
 |---|---|
@@ -200,7 +200,7 @@ Include the source files, `submission.json`, `tests/student/`, English `ANALYSIS
 
 Push the completed work and submit the **URL of the exact GitHub commit** in Moodle Online text. Do not submit only a branch or repository URL. Complete the submission using **Submit assignment** and check its status. If the repository is private, give the instructor access. Any replacement submitted before the deadline must identify the updated commit. The linked commit is the version assessed.
 
-Follow the deadline and any approved individual extension shown in Moodle. This document does not change the Moodle dates. The repository containing this assignment provides the specification; students create the solution and its input/output code themselves. A GitHub Actions run is not required for this version.
+Follow the deadline and any approved individual extension shown in Moodle. This document does not change the Moodle dates. The template provides input/output code, algorithm stubs and public checks. Run **Actions → Public checks** after pushing your work, or use the commands in the repository README locally. Public algorithm checks must pass before submission. Link the exact commit in Moodle; an Actions URL may be included as additional evidence. Passing public examples does not establish correctness on every permitted input. In the unchanged instructor template, Actions checks the testing tools and launch of all four languages; student copies also run algorithm examples, which fail until the TODO bodies are implemented.
 
 ## 10. Assessment
 
