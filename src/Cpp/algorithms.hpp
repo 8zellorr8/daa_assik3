@@ -1,7 +1,7 @@
 #pragma once
 #include "input.hpp"
 
-// Implement the six graph methods and your route helper. See ../README.md.
+// Implement the six graph methods and your route helper. See the README at the repository root.
 
 // DSU with path compression and union by size/rank; return states.
 inline J dsu(const J& input) {

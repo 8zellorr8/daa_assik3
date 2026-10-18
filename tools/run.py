@@ -19,9 +19,9 @@ def select_language(override):
     return language
 
 def build(language):
-    source = P / language / 'source'
-    output = P / language / 'build'
-    output.mkdir(exist_ok=True)
+    source = P / 'src' / language
+    output = P / '.build' / language
+    output.mkdir(parents=True, exist_ok=True)
     if language == 'Python':
         return [sys.executable, str(source / 'main.py')]
     if language == 'Java':
@@ -109,7 +109,7 @@ def main():
         if args.setup:
             return int(bool(run_cases(command, [{'input': {'task': 'ping'},
                                                  'output': {'status': 'ready'}}], 'setup: ping')))
-        cases = json.loads((P / 'tests' / 'public.json').read_text(encoding='utf-8'))
+        cases = json.loads((P / 'tools' / 'public.json').read_text(encoding='utf-8'))
         failures = sum(run_cases(command, [case], f'public {index}: {case.get("name", case["input"]["task"])}')
                        for index, case in enumerate(cases, 1))
         # Check independence of results in a persistent process, including repeated requests.

@@ -1,4 +1,4 @@
-"""Implement the six graph methods and your route helper. See ../README.md."""
+"""Implement the six graph methods and your route helper. See the README at the repository root."""
 
 
 def dsu(request):

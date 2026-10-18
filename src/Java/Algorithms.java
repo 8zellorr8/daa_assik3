@@ -3,7 +3,7 @@ import java.util.Map;
 /**
  * Implement the six methods and add your route-reconstruction helper.
  * Input extraction is provided; all algorithm state belongs to the current request.
- * See ../../ASSIGNMENT_EN.md and ../README.md for contracts and Java guidance.
+ * See ../../README.md for contracts and Java guidance.
  */
 public final class Algorithms {
     /** DSU with path compression and union by size/rank; return states. */

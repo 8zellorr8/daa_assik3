@@ -1,6 +1,6 @@
 using System.Text.Json.Nodes;
 
-// Implement the six methods and your route helper. See ../README.md.
+// Implement the six methods and your route helper. See the README at the repository root.
 public static class Algorithms
 {
     // DSU with path compression and union by size/rank; return states.

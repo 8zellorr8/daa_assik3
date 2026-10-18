@@ -18,11 +18,11 @@ HAS_DOTNET_SDK = bool(shutil.which('dotnet') and subprocess.run(
 class StarterTransportTests(unittest.TestCase):
     def copy_sources(self, language, target, names):
         for name in names:
-            shutil.copyfile(ROOT / language / 'source' / name, target / name)
+            shutil.copyfile(ROOT / 'src' / language / name, target / name)
 
     def verify_transport(self, command):
         requests = [case['input'] for case in json.loads(
-            (ROOT / 'tests/public.json').read_text(encoding='utf-8'))]
+            (ROOT / 'tools/public.json').read_text(encoding='utf-8'))]
         unicode_request = {
             'task': 'dsu', 'n': 0, 'operations': [],
             'note': 'Қазақша русский café 🎓\n\t\b\f\r"\\',

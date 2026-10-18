@@ -17,7 +17,7 @@ import run
 
 class ValidatorTests(unittest.TestCase):
     def test_published_answers(self):
-        cases = json.loads((run.P / 'tests/public.json').read_text(encoding='utf-8'))
+        cases = json.loads((run.P / 'tools/public.json').read_text(encoding='utf-8'))
         for case in cases:
             with self.subTest(case=case['name']):
                 self.assertTrue(public_validate.check(case['input'], case['output'], case['output']))
@@ -138,7 +138,7 @@ class LauncherTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             source = pathlib.Path(folder)
             for name in ('Input.java', 'Json.java', 'Main.java'):
-                shutil.copyfile(run.P / 'Java/source' / name, source / name)
+                shutil.copyfile(run.P / 'src/Java' / name, source / name)
             (source / 'TransportProbe.java').write_text(r'''
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -170,7 +170,7 @@ public class TransportProbe {
             subprocess.run(['javac', '--release', '17', '-encoding', 'UTF-8', '-d', folder,
                             *map(str, source.glob('*.java'))], check=True, timeout=60)
             requests = [case['input'] for case in json.loads(
-                (run.P / 'tests/public.json').read_text(encoding='utf-8'))]
+                (run.P / 'tools/public.json').read_text(encoding='utf-8'))]
             requests += [{'task': 'dsu', 'n': 0, 'operations': [], 'note': 'Қазақша русский café 🎓\n\t"\\'}]
             answers = run.execute(['java', '-Xmx384m', '-cp', folder, 'Main'], requests * 2)
             for request, answer in zip(requests * 2, answers):
@@ -191,7 +191,7 @@ public class TransportProbe {
     @unittest.skipUnless(shutil.which('javac') and shutil.which('java'), 'Java compiler is not installed')
     def test_java_helper_source(self):
         with tempfile.TemporaryDirectory() as folder, patch.object(run, 'P', pathlib.Path(folder)):
-            source = pathlib.Path(folder) / 'Java/source'
+            source = pathlib.Path(folder) / 'src/Java'
             source.mkdir(parents=True)
             (source / 'Main.java').write_text('public class Main {public static void main(String[] a){if(Helper.value()!=42)throw new Error();}}\n')
             (source / 'Helper.java').write_text('class Helper {static int value(){return 42;}}\n')
@@ -199,7 +199,7 @@ public class TransportProbe {
 
     def test_python_helper_source(self):
         with tempfile.TemporaryDirectory() as folder, patch.object(run, 'P', pathlib.Path(folder)):
-            source = pathlib.Path(folder) / 'Python/source'
+            source = pathlib.Path(folder) / 'src/Python'
             source.mkdir(parents=True)
             (source / 'main.py').write_text('from helper import value\nassert value==42\n')
             (source / 'helper.py').write_text('value=42\n')
@@ -210,7 +210,7 @@ public class TransportProbe {
         '.NET SDK is not installed')
     def test_csharp_helper_source(self):
         with tempfile.TemporaryDirectory() as folder, patch.object(run, 'P', pathlib.Path(folder)):
-            source = pathlib.Path(folder) / 'CSharp/source'
+            source = pathlib.Path(folder) / 'src/CSharp'
             source.mkdir(parents=True)
             (source / 'App.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework></PropertyGroup></Project>')
             (source / 'Program.cs').write_text('if(Helper.Value()!=42)throw new System.Exception();\n')
@@ -220,7 +220,7 @@ public class TransportProbe {
     @unittest.skipUnless(shutil.which('g++'), 'C++ compiler not installed in this environment')
     def test_cpp_helper_translation_unit(self):
         with tempfile.TemporaryDirectory() as folder, patch.object(run, 'P', pathlib.Path(folder)):
-            source = pathlib.Path(folder) / 'Cpp/source'
+            source = pathlib.Path(folder) / 'src/Cpp'
             source.mkdir(parents=True)
             (source / 'main.cpp').write_text('int helper(); int main(){return helper()==42?0:1;}\n')
             (source / 'helper.cpp').write_text('int helper(){return 42;}\n')
