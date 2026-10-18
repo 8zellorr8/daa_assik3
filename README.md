@@ -20,7 +20,7 @@ Implement DSU, Kruskal, Prim, Kosaraju SCC, DFS topological ordering and DAG sho
 4. Push your code. **Actions → Public checks** runs automatically in your copy. TODO bodies fail algorithm checks until implemented.
 5. Add your tests and results under [tests/student/](tests/student/README.md), complete English [ANALYSIS.md](ANALYSIS.md), and submit the exact commit URL in Moodle. Click **Submit assignment**. Give the instructor access to a private repository.
 
-[Java starter notes / Пояснения к Java](Java/README.md): input helpers, result format and the role of supplied files.
+Starter notes / Пояснения к коду: [Java](Java/README.md) · [Python](Python/README.md) · [C++](Cpp/README.md) · [C#](CSharp/README.md).
 
 ## Local checks
 

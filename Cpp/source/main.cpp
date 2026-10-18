@@ -1,2 +1,40 @@
 #include "algorithms.hpp"
-int main(){string line;while(getline(cin,line)){try{J x=J::parse(line),y;string t=x["task"].text();if(t=="ping")y=J::O{{"status","ready"}};else if(t=="dsu")y=dsu(x);else if(t=="kruskal")y=kruskal(x);else if(t=="prim")y=prim(x);else if(t=="scc")y=scc(x);else if(t=="topo")y=topo(x);else if(t=="dag")y=dag(x);else throw runtime_error("Unknown task");cout<<y.dump()<<"\n";}catch(const exception&e){cout<<J(J::O{{"error",e.what()}}).dump()<<"\n";}}}
+
+// Provided entry point. Student work belongs in algorithms.hpp.
+J handle(const J& request) {
+    string task = request["task"].text();
+    if (task == "ping") {
+        return J::O{{"status", "ready"}};
+    }
+    if (task == "dsu") {
+        return dsu(request);
+    }
+    if (task == "kruskal") {
+        return kruskal(request);
+    }
+    if (task == "prim") {
+        return prim(request);
+    }
+    if (task == "scc") {
+        return scc(request);
+    }
+    if (task == "topo") {
+        return topo(request);
+    }
+    if (task == "dag") {
+        return dag(request);
+    }
+    throw runtime_error("Unknown task: " + task);
+}
+
+int main() {
+    string line;
+    while (getline(cin, line)) {
+        try {
+            J request = J::parse(line);
+            cout << handle(request).dump() << "\n";
+        } catch (const exception& error) {
+            cout << J(J::O{{"error", error.what()}}).dump() << "\n";
+        }
+    }
+}

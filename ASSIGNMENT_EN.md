@@ -197,7 +197,7 @@ Complete the six methods and add your route helper in the selected source direct
 | C++ | `Cpp/source/algorithms.hpp` | `Cpp/source/main.cpp` |
 | C# | `CSharp/source/Algorithms.cs` | `CSharp/source/Program.cs`, `App.csproj`, `net8.0`, output `App.dll` |
 
-For Java input helpers, result packaging and short implementation reminders, see [Java starter notes](Java/README.md).
+For prepared input variables, result packaging and short implementation reminders, see the starter notes for [Java](Java/README.md), [Python](Python/README.md), [C++](Cpp/README.md) or [C#](CSharp/README.md).
 
 Keep the supplied interface. Additional source files may be placed directly in the same source directory. Use Java 17-compatible code. Include required dependencies as source files; the solution must build and run without downloading packages.
 
