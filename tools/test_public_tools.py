@@ -133,6 +133,62 @@ class LauncherTests(unittest.TestCase):
             self.assertEqual(run.execute([sys.executable, str(script)], requests), requests)
 
     @unittest.skipUnless(shutil.which('javac') and shutil.which('java'), 'Java compiler is not installed')
+    def test_java_input_helpers_and_json_transport(self):
+        # Exercise the actual supplied Java support files, not graph solutions.
+        with tempfile.TemporaryDirectory() as folder:
+            source = pathlib.Path(folder)
+            for name in ('Input.java', 'Json.java', 'Main.java'):
+                shutil.copyfile(run.P / 'Java/source' / name, source / name)
+            (source / 'TransportProbe.java').write_text(r'''
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+public class TransportProbe {
+    static Map<String, Object> handle(Map<String, Object> request) {
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("original", request);
+        result.put("n", Input.vertexCount(request));
+        int[][] rows = request.get("task").equals("dsu")
+            ? Input.operations(request) : Input.edges(request);
+        result.put("rows", rows);
+        if (request.get("task").equals("dag")) {
+            result.put("source", Input.source(request));
+        }
+        result.put("distance", new Long[]{0L, null, -1L, 3000000000L});
+        result.put("flags", Arrays.asList(true, false));
+        result.put("note", "quote=\" slash=\\ line=\n tab=\t");
+        return result;
+    }
+}
+''', encoding='utf-8')
+            # Replace graph methods only in the temporary test directory.
+            methods = ''.join('static Map<String,Object> ' + name
+                              + '(Map<String,Object> x){return TransportProbe.handle(x);}'
+                              for name in ('dsu', 'kruskal', 'prim', 'scc', 'topo', 'dag'))
+            (source / 'Algorithms.java').write_text(
+                'import java.util.*; public class Algorithms {' + methods + '}', encoding='utf-8')
+            subprocess.run(['javac', '--release', '17', '-encoding', 'UTF-8', '-d', folder,
+                            *map(str, source.glob('*.java'))], check=True, timeout=60)
+            requests = [case['input'] for case in json.loads(
+                (run.P / 'tests/public.json').read_text(encoding='utf-8'))]
+            requests += [{'task': 'dsu', 'n': 0, 'operations': [], 'note': 'Қазақша русский café 🎓\n\t"\\'}]
+            answers = run.execute(['java', '-Xmx384m', '-cp', folder, 'Main'], requests * 2)
+            for request, answer in zip(requests * 2, answers):
+                with self.subTest(task=request['task']):
+                    if request['task'] == 'ping':
+                        self.assertEqual(answer, {'status': 'ready'})
+                        continue
+                    self.assertEqual(answer['original'], request)
+                    self.assertEqual(answer['distance'], [0, None, -1, 3000000000])
+                    self.assertEqual(answer['flags'], [True, False])
+                    self.assertEqual(answer['note'], 'quote=" slash=\\ line=\n tab=\t')
+                    if request['task'] != 'ping':
+                        self.assertEqual(answer['n'], request['n'])
+                        self.assertEqual(answer['rows'], request.get('operations', request.get('edges')))
+                    if request['task'] == 'dag':
+                        self.assertEqual(answer['source'], request['source'])
+
+    @unittest.skipUnless(shutil.which('javac') and shutil.which('java'), 'Java compiler is not installed')
     def test_java_helper_source(self):
         with tempfile.TemporaryDirectory() as folder, patch.object(run, 'P', pathlib.Path(folder)):
             source = pathlib.Path(folder) / 'Java/source'

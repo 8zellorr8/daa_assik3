@@ -20,6 +20,8 @@ Implement DSU, Kruskal, Prim, Kosaraju SCC, DFS topological ordering and DAG sho
 4. Push your code. **Actions → Public checks** runs automatically in your copy. TODO bodies fail algorithm checks until implemented.
 5. Add your tests and results under [tests/student/](tests/student/README.md), complete English [ANALYSIS.md](ANALYSIS.md), and submit the exact commit URL in Moodle. Click **Submit assignment**. Give the instructor access to a private repository.
 
+[Java starter notes / Пояснения к Java](Java/README.md): input helpers, result format and the role of supplied files.
+
 ## Local checks
 
 Install **Python 3.12+** for the checking tools and your selected runtime: **JDK 17+** (Java 17-compatible code), Python 3.12+, `g++` with C++17 support, or the **.NET 8 SDK**. Python runs the checker even when your solution is Java; GitHub Actions installs the tools for you.

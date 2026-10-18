@@ -197,6 +197,8 @@ Complete the six methods and add your route helper in the selected source direct
 | C++ | `Cpp/source/algorithms.hpp` | `Cpp/source/main.cpp` |
 | C# | `CSharp/source/Algorithms.cs` | `CSharp/source/Program.cs`, `App.csproj`, `net8.0`, output `App.dll` |
 
+For Java input helpers, result packaging and short implementation reminders, see [Java starter notes](Java/README.md).
+
 Keep the supplied interface. Additional source files may be placed directly in the same source directory. Use Java 17-compatible code. Include required dependencies as source files; the solution must build and run without downloading packages.
 
 Push your work and check **Actions → Public checks**, or run `python tools/run.py --check` locally. The README lists runtime requirements and other commands. TODO bodies are unfinished work; setup success alone does not mean the algorithms pass. Public algorithm checks must pass before submission.
