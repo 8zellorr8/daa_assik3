@@ -6,7 +6,7 @@
   "unique_cases": 766,
   "mixed_requests_one_process": 2298,
   "mixed_repetition_pattern": "cases + reverse(cases) + cases",
-  "mixed_seconds_including_jvm_parse_and_output": 1.558783,
+  "mixed_seconds_including_jvm_parse_and_output": 1.601317,
   "counts_by_task": {
     "ping": 2,
     "dsu": 124,
@@ -26,7 +26,7 @@
       "task": "dsu",
       "n": 100000,
       "m_or_q": 250000,
-      "seconds_including_jvm_parse_and_output": 1.859779,
+      "seconds_including_jvm_parse_and_output": 1.996729,
       "passed": true
     },
     {
@@ -34,7 +34,7 @@
       "task": "kruskal",
       "n": 100000,
       "m_or_q": 250000,
-      "seconds_including_jvm_parse_and_output": 1.804442,
+      "seconds_including_jvm_parse_and_output": 1.825369,
       "passed": true
     },
     {
@@ -42,7 +42,7 @@
       "task": "prim",
       "n": 100000,
       "m_or_q": 250000,
-      "seconds_including_jvm_parse_and_output": 1.800308,
+      "seconds_including_jvm_parse_and_output": 1.882595,
       "passed": true
     },
     {
@@ -50,7 +50,7 @@
       "task": "scc",
       "n": 100000,
       "m_or_q": 250000,
-      "seconds_including_jvm_parse_and_output": 1.751017,
+      "seconds_including_jvm_parse_and_output": 1.986181,
       "passed": true
     },
     {
@@ -58,7 +58,7 @@
       "task": "scc",
       "n": 100000,
       "m_or_q": 250000,
-      "seconds_including_jvm_parse_and_output": 1.74639,
+      "seconds_including_jvm_parse_and_output": 1.72868,
       "passed": true
     },
     {
@@ -66,7 +66,7 @@
       "task": "topo",
       "n": 100000,
       "m_or_q": 250000,
-      "seconds_including_jvm_parse_and_output": 1.753768,
+      "seconds_including_jvm_parse_and_output": 1.879927,
       "passed": true
     },
     {
@@ -74,7 +74,7 @@
       "task": "topo",
       "n": 100000,
       "m_or_q": 250000,
-      "seconds_including_jvm_parse_and_output": 1.70002,
+      "seconds_including_jvm_parse_and_output": 1.738963,
       "passed": true
     },
     {
@@ -82,7 +82,7 @@
       "task": "dag",
       "n": 100000,
       "m_or_q": 250000,
-      "seconds_including_jvm_parse_and_output": 1.739837,
+      "seconds_including_jvm_parse_and_output": 1.939234,
       "passed": true
     },
     {
@@ -90,11 +90,11 @@
       "task": "dag",
       "n": 100000,
       "m_or_q": 250000,
-      "seconds_including_jvm_parse_and_output": 1.649575,
+      "seconds_including_jvm_parse_and_output": 1.635685,
       "passed": true
     }
   ],
-  "python": "3.14.3",
+  "python": "3.12.14",
   "platform": "Windows-11-10.0.26100-SP0",
   "java": "java version \"25.0.1\" 2025-10-21 LTS",
   "heap_option": "-Xmx384m",

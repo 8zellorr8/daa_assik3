@@ -3,20 +3,22 @@
 Run these commands from the repository root with Python 3.12+ and a JDK 17+:
 
 ```sh
+python -m unittest discover -s tools -p "test_*.py"
 python tests/run_own_tests.py --full
 python tools/run.py --setup
 python tools/run.py --check
 python tools/run.py --input tests/own_inputs.jsonl
 ```
 
-The first command compiles the Java submission and direct helper tests with `javac --release 17` into `.build/tests`, checks all results, writes the actual evidence and fails immediately on an error. No packages are downloaded. Compilation has a 60-second timeout; each Java input batch has a 20-second timeout. `python tests/run_own_tests.py` runs the same small, mixed, certificate and helper checks without the nine large cases. It records `own_results_quick.json` and leaves the full-run summary intact.
+The unit-test command checks the Java launcher, JSON transport and semantic validator. The custom runner compiles the Java submission and direct helper tests with `javac --release 17` into `.build/tests`, checks all results, writes the actual evidence and fails immediately on an error. No packages are downloaded. Compilation has a 60-second timeout; each Java input batch has a 20-second timeout. `python tests/run_own_tests.py` runs the same small, mixed, certificate and helper checks without the nine large cases. It records `own_results_quick.json` and leaves the full-run summary intact.
 
-Every Java test process uses `-Xmx384m -Xss256k`. The heap cap matches the supplied launcher. Large traversals also demonstrate that graph depth does not require a large Java call stack. The source implementation remains Java; Python is only the independent test driver and oracle.
+Every Java process launched by the custom runner uses `-Xmx384m -Xss256k`. The heap cap matches the supplied launcher. Large traversals also demonstrate that graph depth does not require a large Java call stack. The source implementation remains Java; Python is only the independent test driver and oracle.
 
 ## Files and results
 
 | File | Contents |
 |---|---|
+| `tool-checks.txt` | Actual successful output from all 10 Java launcher/transport and validator unit tests |
 | `run_own_tests.py` | Deterministic generators, independent expected-value calculations, semantic checks and execution commands |
 | `own_inputs.jsonl` | 46 boundary requests followed by 720 generated requests |
 | `own_expected.jsonl` | Independently computed expectations, matched by line number |

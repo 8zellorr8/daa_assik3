@@ -1,10 +1,9 @@
 .build/
-**/build/
-**/bin/
-**/obj/
 __pycache__/
+*.py[cod]
 *.class
-.submission/
+.idea/
+*.iml
 .env
 *.pem
 *.key

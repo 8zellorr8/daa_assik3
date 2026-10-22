@@ -85,7 +85,7 @@ class LauncherTests(unittest.TestCase):
             request_file = pathlib.Path(folder) / 'input.jsonl'
             request_file.write_text('{"task":"ping"}\n', encoding='utf-8')
             error_output = io.StringIO()
-            with patch.object(sys, 'argv', ['run.py', '--language', 'Python', '--input', str(request_file)]), \
+            with patch.object(sys, 'argv', ['run.py', '--language', 'Java', '--input', str(request_file)]), \
                     patch.object(run, 'build', return_value=['probe']), \
                     patch.object(run.subprocess, 'run', side_effect=subprocess.TimeoutExpired(['probe'], 20)) as execute, \
                     contextlib.redirect_stderr(error_output):
@@ -97,12 +97,20 @@ class LauncherTests(unittest.TestCase):
     def test_manifest_and_explicit_override(self):
         with tempfile.TemporaryDirectory() as folder, patch.object(run, 'P', pathlib.Path(folder)):
             manifest = pathlib.Path(folder) / 'submission.json'
-            manifest.write_text('{"language":"Python"}', encoding='utf-8')
-            self.assertEqual(run.select_language(None), 'Python')
+            manifest.write_text('{"language":"Java"}', encoding='utf-8')
+            self.assertEqual(run.select_language(None), 'Java')
             self.assertEqual(run.select_language('Java'), 'Java')
-            manifest.write_text('{"language":"Unknown"}', encoding='utf-8')
-            with self.assertRaises(ValueError):
-                run.select_language(None)
+            for language in ('Python', 'Cpp', 'CSharp', 'Unknown', None):
+                manifest.write_text(json.dumps({'language': language}), encoding='utf-8')
+                with self.subTest(language=language):
+                    with self.assertRaisesRegex(ValueError, 'Java only'):
+                        run.select_language(None)
+                    with self.assertRaisesRegex(ValueError, 'Java only'):
+                        run.build(language)
+                    if language is not None:
+                        with self.assertRaisesRegex(ValueError, 'Java only'):
+                            run.select_language(language)
+                    self.assertEqual(run.select_language('Java'), 'Java')
 
     def test_protocol_and_runtime_diagnostics(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -134,7 +142,6 @@ class LauncherTests(unittest.TestCase):
 
     @unittest.skipUnless(shutil.which('javac') and shutil.which('java'), 'Java compiler is not installed')
     def test_java_input_helpers_and_json_transport(self):
-        # Exercise the actual supplied Java support files, not graph solutions.
         with tempfile.TemporaryDirectory() as folder:
             source = pathlib.Path(folder)
             for name in ('Input.java', 'Json.java', 'Main.java'):
@@ -161,7 +168,6 @@ public class TransportProbe {
     }
 }
 ''', encoding='utf-8')
-            # Replace graph methods only in the temporary test directory.
             methods = ''.join('static Map<String,Object> ' + name
                               + '(Map<String,Object> x){return TransportProbe.handle(x);}'
                               for name in ('dsu', 'kruskal', 'prim', 'scc', 'topo', 'dag'))
@@ -171,8 +177,13 @@ public class TransportProbe {
                             *map(str, source.glob('*.java'))], check=True, timeout=60)
             requests = [case['input'] for case in json.loads(
                 (run.P / 'tools/public.json').read_text(encoding='utf-8'))]
-            requests += [{'task': 'dsu', 'n': 0, 'operations': [], 'note': 'Қазақша русский café 🎓\n\t"\\'}]
-            answers = run.execute(['java', '-Xmx384m', '-cp', folder, 'Main'], requests * 2)
+            unicode_request = {
+                'task': 'dsu', 'n': 0, 'operations': [],
+                'note': 'Қазақша русский café 🎓\n\t\b\f\r"\\',
+            }
+            requests.append(unicode_request)
+            command = ['java', '-Xmx384m', '-cp', folder, 'Main']
+            answers = run.execute(command, requests * 2)
             for request, answer in zip(requests * 2, answers):
                 with self.subTest(task=request['task']):
                     if request['task'] == 'ping':
@@ -187,6 +198,12 @@ public class TransportProbe {
                         self.assertEqual(answer['rows'], request.get('operations', request.get('edges')))
                     if request['task'] == 'dag':
                         self.assertEqual(answer['source'], request['source'])
+            literal = subprocess.run(
+                command, input=json.dumps(unicode_request, ensure_ascii=False) + '\n',
+                capture_output=True, text=True, encoding='utf-8', timeout=20,
+            )
+            self.assertEqual(literal.returncode, 0, literal.stderr)
+            self.assertEqual(json.loads(literal.stdout)['original'], unicode_request)
 
     @unittest.skipUnless(shutil.which('javac') and shutil.which('java'), 'Java compiler is not installed')
     def test_java_helper_source(self):
@@ -196,37 +213,6 @@ public class TransportProbe {
             (source / 'Main.java').write_text('public class Main {public static void main(String[] a){if(Helper.value()!=42)throw new Error();}}\n')
             (source / 'Helper.java').write_text('class Helper {static int value(){return 42;}}\n')
             self.assertEqual(subprocess.run(run.build('Java'), timeout=20).returncode, 0)
-
-    def test_python_helper_source(self):
-        with tempfile.TemporaryDirectory() as folder, patch.object(run, 'P', pathlib.Path(folder)):
-            source = pathlib.Path(folder) / 'src/Python'
-            source.mkdir(parents=True)
-            (source / 'main.py').write_text('from helper import value\nassert value==42\n')
-            (source / 'helper.py').write_text('value=42\n')
-            self.assertEqual(subprocess.run(run.build('Python'), timeout=20).returncode, 0)
-
-    @unittest.skipUnless(shutil.which('dotnet') and subprocess.run(
-        ['dotnet', '--list-sdks'], capture_output=True, text=True).stdout.strip(),
-        '.NET SDK is not installed')
-    def test_csharp_helper_source(self):
-        with tempfile.TemporaryDirectory() as folder, patch.object(run, 'P', pathlib.Path(folder)):
-            source = pathlib.Path(folder) / 'src/CSharp'
-            source.mkdir(parents=True)
-            (source / 'App.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework></PropertyGroup></Project>')
-            (source / 'Program.cs').write_text('if(Helper.Value()!=42)throw new System.Exception();\n')
-            (source / 'Helper.cs').write_text('static class Helper {public static int Value()=>42;}\n')
-            self.assertEqual(subprocess.run(run.build('CSharp'), timeout=20).returncode, 0)
-
-    @unittest.skipUnless(shutil.which('g++'), 'C++ compiler not installed in this environment')
-    def test_cpp_helper_translation_unit(self):
-        with tempfile.TemporaryDirectory() as folder, patch.object(run, 'P', pathlib.Path(folder)):
-            source = pathlib.Path(folder) / 'src/Cpp'
-            source.mkdir(parents=True)
-            (source / 'main.cpp').write_text('int helper(); int main(){return helper()==42?0:1;}\n')
-            (source / 'helper.cpp').write_text('int helper(){return 42;}\n')
-            command = run.build('Cpp')
-            self.assertEqual(subprocess.run(command, timeout=20).returncode, 0)
-
 
 if __name__ == '__main__':
     unittest.main()

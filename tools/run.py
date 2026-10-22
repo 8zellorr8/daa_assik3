@@ -1,4 +1,4 @@
-"""Public checks and JSON-lines launcher; official grading uses separate code."""
+"""Java public checks and JSON-lines launcher; official grading uses separate code."""
 import argparse
 import json
 import pathlib
@@ -7,37 +7,27 @@ import sys
 from public_validate import check
 
 P = pathlib.Path(__file__).resolve().parents[1]
-LANGUAGES = ('Java', 'Python', 'Cpp', 'CSharp')
+LANGUAGES = ('Java',)
 
 def select_language(override):
-    if override:
-        return override
-    manifest = json.loads((P / 'submission.json').read_text(encoding='utf-8'))
-    language = manifest.get('language')
-    if language not in LANGUAGES:
-        raise ValueError('submission.json language must be Java, Python, Cpp or CSharp')
+    language = override
+    if language is None:
+        manifest = json.loads((P / 'submission.json').read_text(encoding='utf-8'))
+        language = manifest.get('language')
+    if language != 'Java':
+        raise ValueError('This project supports Java only; submission.json language must be Java')
     return language
 
 def build(language):
-    source = P / 'src' / language
-    output = P / '.build' / language
+    if language != 'Java':
+        raise ValueError('This project supports Java only')
+    source = P / 'src' / 'Java'
+    output = P / '.build' / 'Java'
     output.mkdir(parents=True, exist_ok=True)
-    if language == 'Python':
-        return [sys.executable, str(source / 'main.py')]
-    if language == 'Java':
-        command = ['javac', '--release', '17', '-encoding', 'UTF-8', '-d', str(output),
-                   *map(str, sorted(source.glob('*.java')))]
-        executable = ['java', '-Xmx384m', '-cp', str(output), 'Main']
-    elif language == 'Cpp':
-        binary = output / ('main.exe' if sys.platform == 'win32' else 'main')
-        command = ['g++', '-std=c++17', '-O2', '-o', str(binary),
-                   *map(str, sorted(source.glob('*.cpp')))]
-        executable = [str(binary)]
-    else:
-        command = ['dotnet', 'build', str(source / 'App.csproj'), '--nologo', '-o', str(output)]
-        executable = ['dotnet', str(output / 'App.dll')]
+    command = ['javac', '--release', '17', '-encoding', 'UTF-8', '-d', str(output),
+               *map(str, sorted(source.glob('*.java')))]
     subprocess.run(command, check=True, timeout=60, stdout=sys.stderr)
-    return executable
+    return ['java', '-Xmx384m', '-cp', str(output), 'Main']
 
 def read_json(text):
     def invalid_constant(value):
@@ -88,7 +78,7 @@ def run_cases(command, cases, label):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--language', choices=LANGUAGES,
-                        help='override submission.json; omitted means use its selected language')
+                        help='use Java explicitly; omitted means validate submission.json')
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--setup', action='store_true', help='check transport without algorithm implementations')
     mode.add_argument('--check', action='store_true', help='check examples, edge cases and request-state reset')
@@ -112,7 +102,6 @@ def main():
         cases = json.loads((P / 'tools' / 'public.json').read_text(encoding='utf-8'))
         failures = sum(run_cases(command, [case], f'public {index}: {case.get("name", case["input"]["task"])}')
                        for index, case in enumerate(cases, 1))
-        # Check independence of results in a persistent process, including repeated requests.
         failures += run_cases(command, cases + cases, 'state reset: two complete batches in one process')
         return int(bool(failures))
     except subprocess.TimeoutExpired:

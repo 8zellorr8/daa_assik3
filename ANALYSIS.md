@@ -2,7 +2,7 @@
 
 ## Build and interface
 
-The selected language in `submission.json` is Java. All submitted Java sources use Java 17-compatible syntax and the standard library. No third-party graph algorithm or downloaded dependency is used. Production code is in `src/Java/`; the other language directories are unchanged template alternatives and are not selected.
+The selected language in `submission.json` is Java. All submitted Java sources use Java 17-compatible syntax and the standard library. No third-party graph algorithm or downloaded dependency is used. All production code is in `src/Java/`. Python is used only for the launch tools, independent test driver and benchmark orchestration. The launcher and GitHub Actions checks target Java only.
 
 Run these commands from the repository root with JDK 17+ and Python 3.12+ on PATH:
 
@@ -102,7 +102,7 @@ The custom runner uses seed `314159`. Its independent small-graph references are
 | Semantic validator experiments | 41 PASS: 11 valid/alternative witnesses accepted and 30 invalid witnesses rejected | `tests/certificate_checks.jsonl` |
 | Direct route-helper calls | 6 PASS | `tests/route_helper_actual.jsonl` |
 | Full limits | 9/9 PASS at `n=100000`, `m` or `q=250000` | `tests/*_full.{input,expected,actual}.jsonl.gz`, `own_results.json` |
-| Template tool/transport unit tests | 16 discovered, 12 passed, 4 skipped locally because C++/.NET SDKs were unavailable | `python -m unittest discover -s tools -p "test_*.py"` |
+| Java launcher/transport and validator unit tests | 10/10 PASS, no skipped tests | `tests/tool-checks.txt`; `python -m unittest discover -s tools -p "test_*.py"` |
 
 The full-limit suite covers DSU; both MST algorithms; SCCs as a chain of two-vertex components and a single deep cycle; topological ordering of a long chain with extra forward edges and rejection of a deep cycle; a negative-weight DAG chain and a cycle entirely unreachable from its source. Expected results follow directly from those constructions, with detailed proofs in `tests/README.md`. Each full-limit case has its actual input and output saved using deterministic gzip compression, not only a success message. These correctness checks include JVM startup, JSON parsing and output; their elapsed times are not the algorithm-only benchmark below.
 
@@ -163,6 +163,6 @@ Limitations: these are three sparse graphs from one structured generator, one JV
 
 ## Sources and AI assistance
 
-The contracts, allowed algorithms, complexity targets, examples and rubric come from the [assignment template](https://github.com/RZhaniya/daa-assignment-3-graphs), base commit `76c1d91daa90ceadcb225f5408d54d4bfcf397f9`, and the accompanying `docs/Assignment_3_EN.pdf`. The supplied JSON/input adapters, public checker and launch tools originate from that template. No external algorithm implementation was copied and no third-party graph library is used.
+The contracts, allowed algorithms, complexity targets, examples and rubric come from the [assignment template](https://github.com/RZhaniya/daa-assignment-3-graphs), base commit `76c1d91daa90ceadcb225f5408d54d4bfcf397f9`, and the accompanying [assignment PDF](https://github.com/RZhaniya/daa-assignment-3-graphs/blob/76c1d91daa90ceadcb225f5408d54d4bfcf397f9/docs/Assignment_3_EN.pdf). The supplied JSON/input adapters, public checker and launch tools originate from that template. The launcher and its regression tests were narrowed to Java; the public cases and semantic validator remain unchanged. No external algorithm implementation was copied and no third-party graph library is used.
 
 OpenAI Codex assisted with explaining the algorithms and correctness arguments, developing and debugging the Java implementation, test generators and independent oracles, route-helper tests, the benchmark harness, documentation and review. All reported tests and measurements were actually run against the submitted files. Public checks establish observed pass/fail results; they do not assign a grade or submit anything to Moodle.
