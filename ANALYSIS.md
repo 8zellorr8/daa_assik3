@@ -106,7 +106,7 @@ The custom runner uses seed `314159`. Its independent small-graph references are
 
 The full-limit suite covers DSU; both MST algorithms; SCCs as a chain of two-vertex components and a single deep cycle; topological ordering of a long chain with extra forward edges and rejection of a deep cycle; a negative-weight DAG chain and a cycle entirely unreachable from its source. Expected results follow directly from those constructions, with detailed proofs in `tests/README.md`. Each full-limit case has its actual input and output saved using deterministic gzip compression, not only a success message. These correctness checks include JVM startup, JSON parsing and output; their elapsed times are not the algorithm-only benchmark below.
 
-All code is compiled with `--release 17`. Own JSON and helper tests use a small `-Xss256k` stack and a `-Xmx384m` heap to check iterative traversal under the public launcher's memory cap. Public launch/check commands used Python 3.12.14 locally; the custom runner records its Python and Java versions in `tests/own_results.json`. Local Java runtime is Oracle JDK 25.0.1; Java 17 execution is additionally exercised by the repository's GitHub Actions workflow.
+All code is compiled with `--release 17`. Own JSON and helper tests use a small `-Xss256k` stack and a `-Xmx384m` heap to check iterative traversal under the public launcher's memory cap. Public launch/check commands used Python 3.12.14 locally; the custom runner records its Python and Java versions in `tests/own_results.json`. Local Java runtime is Oracle JDK 25.0.1. The GitHub Actions workflow is configured to run all checks using Java 17; its remote result is separate from these recorded local runs.
 
 ### Actual route-helper calls
 
