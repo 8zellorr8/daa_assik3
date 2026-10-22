@@ -1,0 +1,121 @@
+{
+  "mode": "timing",
+  "base_seed": 20261022,
+  "warmups_per_method_per_size": 3,
+  "repetitions_per_method_per_size": 5,
+  "timer": "System.nanoTime()",
+  "java_version": "25.0.1",
+  "java_runtime": "25.0.1+8-LTS-27",
+  "java_vm": "Java HotSpot(TM) 64-Bit Server VM",
+  "os": "Windows 11",
+  "os_version": "10.0",
+  "architecture": "amd64",
+  "available_processors": 12,
+  "max_heap_bytes": 402653184,
+  "checksum": 1734542282594053606,
+  "measurements": [
+    {
+      "n": 1000,
+      "m": 4000,
+      "seed": 20296022,
+      "graph_fingerprint": "6c254daa30a28227",
+      "expected_components": 4,
+      "expected_cost": -995949415446,
+      "validation": "passed",
+      "kruskal_nanoseconds": [
+        1184000,
+        1267400,
+        1152100,
+        1259900,
+        1479700
+      ],
+      "prim_nanoseconds": [
+        1394400,
+        1400700,
+        1583400,
+        1505400,
+        1377100
+      ],
+      "kruskal_median_nanoseconds": 1259900,
+      "prim_median_nanoseconds": 1400700
+    },
+    {
+      "n": 10000,
+      "m": 40000,
+      "seed": 20611022,
+      "graph_fingerprint": "ca92b06cfb17a21e",
+      "expected_components": 4,
+      "expected_cost": -9995504392833,
+      "validation": "passed",
+      "kruskal_nanoseconds": [
+        32691900,
+        12213700,
+        15059300,
+        11127900,
+        11795500
+      ],
+      "prim_nanoseconds": [
+        14108000,
+        12922200,
+        12812300,
+        12828000,
+        12909400
+      ],
+      "kruskal_median_nanoseconds": 12213700,
+      "prim_median_nanoseconds": 12909400
+    },
+    {
+      "n": 100000,
+      "m": 250000,
+      "seed": 23611022,
+      "graph_fingerprint": "31aa22d0a98a7eb4",
+      "expected_components": 4,
+      "expected_cost": -99991006962082,
+      "validation": "passed",
+      "kruskal_nanoseconds": [
+        126426600,
+        117338900,
+        143840900,
+        116714200,
+        116969500
+      ],
+      "prim_nanoseconds": [
+        141650800,
+        138647500,
+        144849200,
+        143503000,
+        142012500
+      ],
+      "kruskal_median_nanoseconds": 117338900,
+      "prim_median_nanoseconds": 142012500
+    }
+  ],
+  "measured_at_utc": "2026-10-22T14:38:13.718506+00:00",
+  "hardware": {
+    "processor": "11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz",
+    "logical_processors": 12,
+    "platform": "Windows-11-10.0.26100-SP0",
+    "physical_memory_bytes": 16888246272
+  },
+  "compiler_version": "javac 25.0.1",
+  "compile_command": [
+    "javac",
+    "--release",
+    "17",
+    "-d",
+    "C:\\Users\\ulana\\OneDrive\\Documents\\ChatGPT\\DAA\\daa-assignment-3-graphs\\.build\\benchmark",
+    "C:\\Users\\ulana\\OneDrive\\Documents\\ChatGPT\\DAA\\daa-assignment-3-graphs\\src\\Java\\Algorithms.java",
+    "C:\\Users\\ulana\\OneDrive\\Documents\\ChatGPT\\DAA\\daa-assignment-3-graphs\\src\\Java\\Input.java",
+    "C:\\Users\\ulana\\OneDrive\\Documents\\ChatGPT\\DAA\\daa-assignment-3-graphs\\src\\Java\\Json.java",
+    "C:\\Users\\ulana\\OneDrive\\Documents\\ChatGPT\\DAA\\daa-assignment-3-graphs\\src\\Java\\Main.java",
+    "C:\\Users\\ulana\\OneDrive\\Documents\\ChatGPT\\DAA\\daa-assignment-3-graphs\\tests\\Benchmark.java"
+  ],
+  "run_command": [
+    "java",
+    "-Xms256m",
+    "-Xmx384m",
+    "-cp",
+    "C:\\Users\\ulana\\OneDrive\\Documents\\ChatGPT\\DAA\\daa-assignment-3-graphs\\.build\\benchmark",
+    "Benchmark"
+  ]
+}

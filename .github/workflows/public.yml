@@ -29,3 +29,9 @@ jobs:
       - name: Check your algorithms and request-state reset
         if: github.repository != 'RZhaniya/daa-assignment-3-graphs'
         run: python tools/run.py --check
+      - name: Check own cases, witnesses, route helper and full limits
+        if: github.repository != 'RZhaniya/daa-assignment-3-graphs'
+        run: python tests/run_own_tests.py --full
+      - name: Validate benchmark forests and known optimum costs
+        if: github.repository != 'RZhaniya/daa-assignment-3-graphs'
+        run: python tests/benchmark.py --validate-only

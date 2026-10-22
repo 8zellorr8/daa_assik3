@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-/** Provided program entry point. Implement your graph methods in Algorithms.java. */
 public final class Main {
     private static Map<String, Object> handle(Map<String, Object> request) {
         String task = (String) request.get("task");
@@ -31,21 +30,22 @@ public final class Main {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(System.in, StandardCharsets.UTF_8));
-        PrintWriter writer = new PrintWriter(
-                new OutputStreamWriter(System.out, StandardCharsets.UTF_8), true);
-
-        String line;
-        while ((line = reader.readLine()) != null) {
-            Map<String, Object> request = Json.parseRequest(line);
-            try {
+    public static void main(String[] args) {
+        try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(System.in, StandardCharsets.UTF_8));
+                PrintWriter writer = new PrintWriter(
+                    new OutputStreamWriter(System.out, StandardCharsets.UTF_8), true)) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                Map<String, Object> request = Json.parseRequest(line);
                 writer.println(Json.write(handle(request)));
-            } catch (UnsupportedOperationException error) {
-                // Keep the JSON Lines protocol while a method still has its TODO.
-                writer.println(Json.write(Map.of("error", error.getMessage())));
+                if (writer.checkError()) {
+                    throw new IOException("Cannot write the result");
+                }
             }
+        } catch (IOException error) {
+            System.err.println("Input/output error: " + error.getMessage());
+            System.exit(1);
         }
     }
 }

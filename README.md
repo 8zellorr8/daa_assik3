@@ -1,5 +1,20 @@
 # Assignment 3: Graph Algorithms for a Campus Festival
 
+## Completed Java solution
+
+The Java 17 solution implements DSU, Kruskal, Prim, Kosaraju SCC, DFS topological ordering and DAG shortest paths with route reconstruction. See [ANALYSIS.md](ANALYSIS.md) for correctness arguments, complexity, actual helper calls, test results, benchmark measurements and source/AI acknowledgements. [tests/README.md](tests/README.md) explains the independent expected answers and stored test evidence.
+
+Run from this directory with JDK 17+ and Python 3.12+:
+
+```sh
+python tools/run.py --setup
+python tools/run.py --check
+python tests/run_own_tests.py --full
+python tests/benchmark.py
+```
+
+The original assignment specification follows.
+
 [Assignment (PDF, English)](docs/Assignment_3_EN.pdf) · [Задание (PDF, русский)](docs/Assignment_3_RU.pdf)
 
 [Русская версия](README_RU.md)
